@@ -76,7 +76,7 @@ export class PedidosService {
   private calcularValorTotal(pedido_produtos: any[], produtos: any[]): number {
     return pedido_produtos.reduce((total, item) => {
       const produto = produtos.find(p => p.id === item.produto_id);
-      return total + (produto.valor * item.quantidade_produto); // Ajuste conforme sua estrutura
+      return total + (produto.valor * item.quantidade_produto);
     }, 0);
   }
 
