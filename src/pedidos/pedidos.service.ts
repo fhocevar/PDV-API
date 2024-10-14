@@ -2,6 +2,8 @@ import { Injectable, NotFoundException, BadRequestException, Inject, forwardRef 
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreatePedidoDto } from './dto/create-pedido.dto';
 import { ProdutosService } from '../produtos/produtos.service'; 
+import { CarrinhoService } from './carrinho.service';
+import { PagamentoService } from './pagamento.service';
 
 @Injectable()
 export class PedidosService {
@@ -9,6 +11,9 @@ export class PedidosService {
     private prisma: PrismaService,
     @Inject(forwardRef(() => ProdutosService))
     private produtosService: ProdutosService,
+    private readonly pagamentoService: PagamentoService,
+    @Inject(forwardRef(() => CarrinhoService))
+    private readonly carrinhoService: CarrinhoService,
   ) {}
 
   async create(createPedidoDto: CreatePedidoDto, userId: number) {
@@ -32,10 +37,13 @@ export class PedidosService {
       }
     });
     
-    const valor_total = produtos.reduce((total, produto) => {
-      const item = pedido_produtos.find(p => p.produto_id === produto.id);
-      return total + (produto.valor * (item ? item.quantidade_produto : 0));
-    }, 0);
+    const valor_total = this.calcularValorTotal(pedido_produtos, produtos);
+    
+    const pagamentoProcessado = await this.pagamentoService.processarPagamento(valor_total);
+    
+    if (!pagamentoProcessado) {
+      throw new BadRequestException('Falha ao processar pagamento.');
+    }
     
     const pedido = await this.prisma.pedido.create({
       data: {
@@ -46,7 +54,7 @@ export class PedidosService {
         pedido_produtos: {
           create: await Promise.all(
             pedido_produtos.map(async (item) => {
-              const produto = await this.produtosService.findOne(userId,item.produto_id);
+              const produto = await this.produtosService.findOne(userId, item.produto_id);
               return {
                 produto_id: item.produto_id,
                 quantidade_produto: item.quantidade_produto,
@@ -63,6 +71,13 @@ export class PedidosService {
     }
 
     return pedido;
+  }
+
+  private calcularValorTotal(pedido_produtos: any[], produtos: any[]): number {
+    return pedido_produtos.reduce((total, item) => {
+      const produto = produtos.find(p => p.id === item.produto_id);
+      return total + (produto.valor * item.quantidade_produto); // Ajuste conforme sua estrutura
+    }, 0);
   }
 
   async findAll(clienteId?: number, userId?: number) {
@@ -85,7 +100,7 @@ export class PedidosService {
     return pedidos.map(pedido => ({
       pedido: {
         id: pedido.id,
-        valor_total: pedido.pedido_produtos.reduce((total, item) => total + (item.quantidade_produto * item.valor_produto), 0), // Calcula valor total
+        valor_total: pedido.pedido_produtos.reduce((total, item) => total + (item.quantidade_produto * item.valor_produto), 0),
         observacao: pedido.observacao,
         cliente_id: pedido.cliente_id,
       },
@@ -114,6 +129,20 @@ export class PedidosService {
     }
 
     return pedidos;
-}
+  }
 
+  async criarPedidoDoCarrinho(userId: number, clienteId: number) {
+    const carrinho = this.carrinhoService.obterCarrinho(userId);
+
+    if (carrinho.produtos.length === 0) {
+      throw new BadRequestException('O carrinho está vazio.');
+    }
+
+    const pedidoDto = {
+      cliente_id: clienteId,
+      pedido_produtos: carrinho.produtos,
+    };
+
+    return this.create(pedidoDto, userId);
+  }
 }

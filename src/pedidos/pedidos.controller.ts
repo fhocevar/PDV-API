@@ -3,6 +3,7 @@ import { PedidosService } from './pedidos.service';
 import { CreatePedidoDto } from './dto/create-pedido.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CarrinhoService } from './carrinho.service';
 
 @ApiTags('Pedidos')
 @Controller('pedidos')
@@ -36,4 +37,7 @@ export class PedidosController {
   async findOne(@Param('id') id: string) {
     return this.pedidosService.findOne(+id);
   }
+
+
+  
 }

@@ -4,9 +4,11 @@ import { PedidosService } from './pedidos.service';
 import { PrismaModule } from '../../prisma/prisma.module';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ProdutosModule } from '../produtos/produtos.module';
+import { PagamentoModule } from './pagamento.module';
+import { CarrinhoModule } from './carrinho.module';
 
 @Module({
-  imports: [
+  imports: [PagamentoModule,CarrinhoModule,
     PrismaModule,
     forwardRef(() => ProdutosModule),
   ],
