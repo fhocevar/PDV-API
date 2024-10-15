@@ -45,10 +45,12 @@
     "mercadopago": "^2.0.15",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.15",
+    "pagseguro": "^0.1.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
+    "square": "^38.1.0",
     "stripe": "^17.2.0",
     "swagger-ui-express": "^5.0.1",
     "uuid": "^10.0.0"
