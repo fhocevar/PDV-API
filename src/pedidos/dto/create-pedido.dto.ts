@@ -46,7 +46,19 @@ export class CreatePedidoDto {
   @Type(() => PedidoProduto)
   pedido_produtos: PedidoProduto[];
 
+  @ApiProperty({
+    description: 'Token do pagamento',
+    example: 'tok_visa',
+  })
   @IsString()
   @IsNotEmpty()
   token: string;
+
+  @ApiProperty({
+    description: 'Método de pagamento',
+    example: 'stripe',
+  })
+  @IsString()
+  @IsNotEmpty()
+  metodo: string; 
 }

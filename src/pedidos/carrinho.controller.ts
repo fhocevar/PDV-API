@@ -31,6 +31,6 @@ export class CarrinhoController {
     @Param('userId', ParseIntPipe) userId: number,
     @Body() createPedidoDto: CreatePedidoDto
   ) {
-    return this.pedidosService.criarPedidoDoCarrinho(userId, clienteId, createPedidoDto.token);
+    return this.pedidosService.criarPedidoDoCarrinho(userId, clienteId, createPedidoDto.token, createPedidoDto.metodo);
   }  
 }

@@ -17,7 +17,7 @@ export class PedidosService {
   ) {}
 
   async create(createPedidoDto: CreatePedidoDto, userId: number) {
-    const { cliente_id, pedido_produtos, token } = createPedidoDto;
+    const { cliente_id, pedido_produtos, token, metodo } = createPedidoDto;
     
     const clienteExists = await this.prisma.cliente.findUnique({ where: { id: cliente_id } });
     if (!clienteExists) {
@@ -39,7 +39,7 @@ export class PedidosService {
     
     const valor_total = this.calcularValorTotal(pedido_produtos, produtos);
     
-    const pagamentoProcessado = await this.pagamentoService.processarPagamento(valor_total, token);
+    const pagamentoProcessado = await this.pagamentoService.processarPagamento(valor_total, token, metodo);
     
     if (!pagamentoProcessado) {
       throw new BadRequestException('Falha ao processar pagamento.');
@@ -131,7 +131,7 @@ export class PedidosService {
     return pedidos;
   }
 
-  async criarPedidoDoCarrinho(userId: number, clienteId: number, token: string) {
+  async criarPedidoDoCarrinho(userId: number, clienteId: number, token: string, metodo: string) {
     const carrinho = this.carrinhoService.obterCarrinho(userId);
 
     if (carrinho.produtos.length === 0) {
@@ -141,7 +141,7 @@ export class PedidosService {
     const pedidoDto: CreatePedidoDto = {
       cliente_id: clienteId,
       pedido_produtos: carrinho.produtos,
-      token: token,
+      token: token, metodo: metodo,
     };
 
     return this.create(pedidoDto, userId);

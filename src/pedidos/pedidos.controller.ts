@@ -50,6 +50,7 @@ export class PedidosController {
  ) {
    const userId = req.user.id;
    const token = createPedidoDto.token;
-  return this.pedidosService.criarPedidoDoCarrinho(userId, clienteId, token);
+   const metodo = createPedidoDto.metodo;
+  return this.pedidosService.criarPedidoDoCarrinho(userId, clienteId, token, metodo);
  }  
 }
