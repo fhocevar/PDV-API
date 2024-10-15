@@ -1,7 +1,8 @@
 import { Controller, Post, Get, Body, Param, ParseIntPipe, Inject, forwardRef } from '@nestjs/common';
 import { PedidosService } from './pedidos.service';
-import { CarrinhoService } from './carrinho.service'; // Importe o serviço de carrinho
+import { CarrinhoService } from './carrinho.service';
 import { CarrinhoDto } from './dto/carrinho.dto';
+import { CreatePedidoDto } from './dto/create-pedido.dto';
 
 @Controller('carrinho')
 export class CarrinhoController {
@@ -25,7 +26,11 @@ export class CarrinhoController {
   }
 
   @Post('finalizar/:clienteId')
-  finalizarPedido(@Param('clienteId', ParseIntPipe) clienteId: number, @Param('userId', ParseIntPipe) userId: number) {
-    return this.pedidosService.criarPedidoDoCarrinho(userId, clienteId);
-  }
+  finalizarPedido(
+    @Param('clienteId', ParseIntPipe) clienteId: number,
+    @Param('userId', ParseIntPipe) userId: number,
+    @Body() createPedidoDto: CreatePedidoDto
+  ) {
+    return this.pedidosService.criarPedidoDoCarrinho(userId, clienteId, createPedidoDto.token);
+  }  
 }

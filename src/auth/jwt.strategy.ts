@@ -26,13 +26,5 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
     return user;
   }}
-    
   
-  //async validate(payload: any): Promise<UsuarioEntity> {
-    //const usuarioId = payload.sub;
-  //console.log('ID do usuário extraído do JWT:', usuarioId);
-  //if (!usuarioId || isNaN(usuarioId)) {
-    //throw new BadRequestException('ID inválido no payload');
- // }
-    //return this.usersService.findOne(payload.sub);
   

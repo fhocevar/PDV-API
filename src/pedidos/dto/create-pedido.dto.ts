@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsNumber, IsOptional, ValidateNested } from 'class-validator';
+import { IsArray, IsNotEmpty, IsNumber, IsOptional, ValidateNested, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -45,4 +45,8 @@ export class CreatePedidoDto {
   @ValidateNested({ each: true })
   @Type(() => PedidoProduto)
   pedido_produtos: PedidoProduto[];
+
+  @IsString()
+  @IsNotEmpty()
+  token: string;
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards, Request,  Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards, Request,  Query, ParseIntPipe } from '@nestjs/common';
 import { PedidosService } from './pedidos.service';
 import { CreatePedidoDto } from './dto/create-pedido.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -37,7 +37,19 @@ export class PedidosController {
   async findOne(@Param('id') id: string) {
     return this.pedidosService.findOne(+id);
   }
-
-
-  
+ 
+ @UseGuards(JwtAuthGuard)
+ @Post('finalizar/:clienteId')
+ @ApiOperation({ summary: 'Finalizar um pedido' })
+ @ApiResponse({ status: 201, description: 'Pedido finalizado com sucesso.' })
+ @ApiResponse({ status: 400, description: 'Dados inválidos.' })
+ async finalizarPedido(
+   @Param('clienteId', ParseIntPipe) clienteId: number,
+   @Request() req,
+   @Body() createPedidoDto: CreatePedidoDto,
+ ) {
+   const userId = req.user.id;
+   const token = createPedidoDto.token;
+  return this.pedidosService.criarPedidoDoCarrinho(userId, clienteId, token);
+ }  
 }
