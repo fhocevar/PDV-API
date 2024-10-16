@@ -4,6 +4,7 @@ import { CreatePedidoDto } from './dto/create-pedido.dto';
 import { ProdutosService } from '../produtos/produtos.service'; 
 import { CarrinhoService } from './carrinho.service';
 import { PagamentoService } from './pagamento.service';
+import { CupomFiscalService } from './CupomFiscal.service';
 
 @Injectable()
 export class PedidosService {
@@ -14,6 +15,7 @@ export class PedidosService {
     private readonly pagamentoService: PagamentoService,
     @Inject(forwardRef(() => CarrinhoService))
     private readonly carrinhoService: CarrinhoService,
+    private readonly cupomFiscalService: CupomFiscalService,
   ) {}
 
   async create(createPedidoDto: CreatePedidoDto, userId: number) {
@@ -65,6 +67,11 @@ export class PedidosService {
         },
       },
     });    
+  
+    const cupomEmitido = await this.cupomFiscalService.emitirCupom(pedido);
+    if (!cupomEmitido) {
+      throw new BadRequestException('Falha ao emitir cupom fiscal.');
+    }
     
     for (const item of pedido_produtos) {
       await this.produtosService.updateEstoque(item.produto_id, item.quantidade_produto);
