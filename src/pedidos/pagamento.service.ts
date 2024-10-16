@@ -2,6 +2,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import Stripe from 'stripe';
 import * as paypal from '@paypal/checkout-server-sdk';
 import { Client, Environment } from 'square';
+import axios from 'axios';
 
 @Injectable()
 export class PagamentoService {
@@ -36,6 +37,10 @@ export class PagamentoService {
         return this.processarPagamentoPayPal(valor, token);
       case 'square':
         return this.processarPagamentoSquare(valor, token);
+        case 'pagseguro':
+        return this.processarPagamentoPagSeguro(valor, token);
+      case 'mercadopago':
+        return this.processarPagamentoMercadoPago(valor, token);
       default:
         throw new BadRequestException('Método de pagamento inválido.');
     }
@@ -92,6 +97,37 @@ export class PagamentoService {
       return response.result.payment.status === 'COMPLETED'; 
     } catch (error) {
       throw new BadRequestException('Erro ao processar pagamento no Square: ' + error.message);
+    }
+  }  
+
+  private async processarPagamentoPagSeguro(valor: number, token: string): Promise<boolean> {
+    try {
+      const response = await axios.post('https://ws.sandbox.pagseguro.uol.com.br/v2/checkout', {        
+        amount: valor.toFixed(2),
+        currency: 'BRL',
+        token: token,        
+      });
+
+      return response.data.status === 'SUCCESS';
+    } catch (error) {
+      throw new BadRequestException('Erro ao processar pagamento no PagSeguro: ' + error.message);
+    }
+  }
+
+  private async processarPagamentoMercadoPago(valor: number, token: string): Promise<boolean> {
+    try {
+      const response = await axios.post('https://api.mercadopago.com/v1/payments', {        
+        transaction_amount: valor,
+        token: token,        
+      }, {
+        headers: {
+          Authorization: `Bearer seu-access-token`,
+        },
+      });
+
+      return response.data.status === 'approved';
+    } catch (error) {
+      throw new BadRequestException('Erro ao processar pagamento no Mercado Pago: ' + error.message);
     }
   }
 }
