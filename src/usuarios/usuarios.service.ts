@@ -7,6 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { UsuarioEntity } from './usuarios.entity';
 import * as jwt from 'jsonwebtoken';
 import * as validator from 'validator';
+import { UserRole } from '@prisma/client';
 
 @Injectable()
 export class UsuariosService {
@@ -14,28 +15,39 @@ export class UsuariosService {
 
   async create(createUsuarioDto: CreateUsuarioDto) {
     console.log('Dados recebidos para criação:', createUsuarioDto);
+        
     const { email, senha, nome, role } = createUsuarioDto;
     console.log('Email:', email);
-    console.log('Email:', senha);
+    console.log('Senha:', senha);
     console.log('Nome:', nome);
     console.log('Role:', role);
-
+    
+    if (!Object.values(UserRole).includes(role)) {
+      throw new BadRequestException('Role inválido');
+  }
+    
     const usuarioExistente = await this.prisma.usuario.findUnique({
-      where: { email },
+        where: { email },
     });
 
     if (usuarioExistente) {
-      throw new ConflictException('E-mail já cadastrado.');
+        throw new ConflictException('E-mail já cadastrado.');
     }
-
+    
     const hashedPassword = await bcrypt.hash(senha, 10);
-
+    
     const usuario = await this.prisma.usuario.create({
-      data: { ...createUsuarioDto, senha: hashedPassword },
+        data: {
+            nome,              
+            email,             
+            senha: hashedPassword, 
+            role: role as UserRole,             
+        },
     });
 
     return usuario;
-  }
+}
+
 
   async findAll() {
     return this.prisma.usuario.findMany();

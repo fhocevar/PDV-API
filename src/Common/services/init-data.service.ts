@@ -1,5 +1,6 @@
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { UserRole } from '@prisma/client';
 
 @Injectable()
 export class InitDataService implements OnModuleInit, OnModuleDestroy {
@@ -48,13 +49,13 @@ export class InitDataService implements OnModuleInit, OnModuleDestroy {
         nome: 'admin',
         email: 'admin@example.com',
         senha: 'admin123',
-        role: 'admin', 
+        role: UserRole.ADMIN, 
       },
       {        
         nome: 'usuario',
         email: 'usuario@example.com',        
         senha: 'usuario123',
-        role: 'usuario',
+        role: UserRole.USUARIO_COMUM,
       },
     ];
 

@@ -1,5 +1,8 @@
 import {Body,Controller,Get,Param, Post, HttpCode,  HttpStatus, Patch, Request, UseGuards, Put, NotFoundException, BadRequestException, ConflictException, UnauthorizedException} from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Roles } from '../auth/roles.decorator';
+import { RolesGuard } from '../auth/roles.guard';
+import { UserRole } from '@prisma/client';
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { RedefinirSenhaDto } from './dto/redefinir-senha.dto';
@@ -13,8 +16,9 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Usuários')
 @Controller('usuarios')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class UsuariosController {
-  constructor(private readonly usuariosService: UsuariosService, private prisma: PrismaService,private readonly authService: AuthService, ) {}
+    constructor(private readonly usuariosService: UsuariosService, private prisma: PrismaService,private readonly authService: AuthService, ) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -48,9 +52,9 @@ export class UsuariosController {
   @ApiResponse({ status: 400, description: 'ID deve ser um número.' })
   @ApiResponse({ status: 404, description: 'Usuário não encontrado.' })
   async findOne(@Param('id') id: string) {
-    const usuarioId = parseInt(id, 10); // Converte o ID para número
+    const usuarioId = parseInt(id, 10);
 
-  console.log('ID recebido no controlador:', usuarioId); // Log do ID recebido
+  console.log('ID recebido no controlador:', usuarioId);
 
   if (isNaN(usuarioId)) {
     throw new BadRequestException('ID deve ser um número');
@@ -98,6 +102,22 @@ async updateProfile(@Request() req, @Body() updateUsuarioDto: UpdateUsuarioDto) 
     data: { nome, email, ...(hashedPassword && { senha: hashedPassword }) },
   });
   return updatedUser;}
+
+@Get('admin')
+@Roles(UserRole.ADMIN)
+@ApiOperation({ summary: 'Dados apenas para administradores' })
+@ApiResponse({ status: 200, description: 'Dados retornados com sucesso.' })
+getAdminData() {
+  return 'Dados apenas para administradores';
+}
+
+@Get('supervisor')
+@Roles(UserRole.SUPERVISOR)
+@ApiOperation({ summary: 'Dados apenas para supervisores' })
+@ApiResponse({ status: 200, description: 'Dados retornados com sucesso.' })
+getSupervisorData() {
+  return 'Dados apenas para supervisores';
+}
 }
 
 

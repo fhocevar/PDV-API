@@ -13,12 +13,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  ADMIN
+  SUPERVISOR
+  GERENTE
+  USUARIO_COMUM
+}
+
 model Usuario {
   id        Int      @id @default(autoincrement())
   nome      String
   email     String   @unique
   senha     String
-  role      String
+  role      UserRole
   produtos Produto[] @relation(name: "ProdutoToUsuario")
 }
 

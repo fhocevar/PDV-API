@@ -14,10 +14,12 @@ import { LeituraService } from './leitura/leitura.service';
 import { LeituraModule } from './leitura/leitura.module';
 import { CarrinhoService } from './pedidos/carrinho.service';
 import { PagamentoService } from './pagamentos/pagamento.service';
+import { RolesGuard } from './auth/roles.guard';
+import { JwtAuthGuard } from './auth/jwt-auth.guard'
 
 @Module({
   imports: [UsuariosModule, CategoriasModule, ProdutosModule, ClientesModule, PedidosModule, AuthModule,MailModule, PrismaModule, LeituraModule],
   controllers: [AppController],
-  providers: [AppService, LeituraService, CarrinhoService, PagamentoService] 
+  providers: [AppService, LeituraService, CarrinhoService, PagamentoService, RolesGuard, JwtAuthGuard] 
 })
 export class AppModule {}
