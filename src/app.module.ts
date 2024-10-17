@@ -13,7 +13,7 @@ import { MailModule } from './mail/mail.module';
 import { LeituraService } from './leitura/leitura.service';
 import { LeituraModule } from './leitura/leitura.module';
 import { CarrinhoService } from './pedidos/carrinho.service';
-import { PagamentoService } from './pedidos/pagamento.service';
+import { PagamentoService } from './pagamentos/pagamento.service';
 
 @Module({
   imports: [UsuariosModule, CategoriasModule, ProdutosModule, ClientesModule, PedidosModule, AuthModule,MailModule, PrismaModule, LeituraModule],

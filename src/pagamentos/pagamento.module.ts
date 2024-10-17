@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { PagamentoService } from './pagamento.service';
+import { PagamentoService } from '../pagamentos/pagamento.service';
 
 @Module({
   providers: [PagamentoService],

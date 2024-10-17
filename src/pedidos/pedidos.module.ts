@@ -4,9 +4,9 @@ import { PedidosService } from './pedidos.service';
 import { PrismaModule } from '../../prisma/prisma.module';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ProdutosModule } from '../produtos/produtos.module';
-import { PagamentoModule } from './pagamento.module';
+import { PagamentoModule } from '../pagamentos/pagamento.module';
 import { CarrinhoModule } from './carrinho.module';
-import { CupomFiscalModule } from './CupomFiscal.module';
+import { CupomFiscalModule } from '../pagamentos/CupomFiscal.module';
 @Module({
   imports: [PagamentoModule,CarrinhoModule,CupomFiscalModule,
     PrismaModule,

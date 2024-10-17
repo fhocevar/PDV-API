@@ -3,8 +3,8 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { CreatePedidoDto } from './dto/create-pedido.dto';
 import { ProdutosService } from '../produtos/produtos.service'; 
 import { CarrinhoService } from './carrinho.service';
-import { PagamentoService } from './pagamento.service';
-import { CupomFiscalService } from './CupomFiscal.service';
+import { PagamentoService } from '../pagamentos/pagamento.service';
+import { CupomFiscalService } from '../pagamentos/CupomFiscal.service';
 
 @Injectable()
 export class PedidosService {
