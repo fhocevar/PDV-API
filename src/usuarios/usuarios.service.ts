@@ -8,6 +8,7 @@ import { UsuarioEntity } from './usuarios.entity';
 import * as jwt from 'jsonwebtoken';
 import * as validator from 'validator';
 import { UserRole } from '@prisma/client';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsuariosService {
@@ -30,13 +31,21 @@ export class UsuariosService {
       throw new BadRequestException('Role inválido');
   }
     
-    const usuarioExistente = await this.prisma.usuario.findUnique({
+    const usuarioExistenteEmail = await this.prisma.usuario.findUnique({
         where: { email },
     });
 
-    if (usuarioExistente) {
+    if (usuarioExistenteEmail) {
         throw new ConflictException('E-mail já cadastrado.');
     }
+
+    const usuarioExistenteNome = await this.prisma.usuario.findMany({
+      where: { nome },
+  });
+
+  if (usuarioExistenteNome.length > 0) {
+    throw new ConflictException('Nome de usuário já cadastrado.');
+}
     
     const hashedPassword = await bcrypt.hash(senha, 10);
     
@@ -54,7 +63,9 @@ export class UsuariosService {
 
 
   async findAll() {
-    return this.prisma.usuario.findMany();
+    const usuarios = await this.prisma.usuario.findMany();
+  console.log('Usuários encontrados:', usuarios);
+  return usuarios;
   }
 
   async findOne(id: number) {    

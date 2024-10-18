@@ -15,7 +15,7 @@ import { LoginDto } from './dto/login.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Usuários')
-@Controller()
+@Controller('usuarios')
 //@UseGuards(JwtAuthGuard, RolesGuard)
 export class UsuariosController {
     constructor(private readonly usuariosService: UsuariosService, private prisma: PrismaService,private readonly authService: AuthService, ) {}

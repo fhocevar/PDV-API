@@ -8,6 +8,8 @@ import { JwtStrategy } from './jwt.strategy';
 import { MailModule } from '../mail/mail.module';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { PrismaModule } from '../../prisma/prisma.module';
+import { UsuariosService } from '../usuarios/usuarios.service';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Module({
   imports: [
@@ -16,11 +18,11 @@ import { PrismaModule } from '../../prisma/prisma.module';
     PassportModule, 
     PrismaModule, 
     JwtModule.register({
-      secret: process.env.JWT_SECRET,
+      secret: process.env.JWT_SECRET || 'default_secret',
       signOptions: { expiresIn: '1h' },
     }),
   ],
-  providers: [AuthService, JwtStrategy, JwtAuthGuard],
+  providers: [AuthService, JwtStrategy, JwtAuthGuard, UsuariosService,PrismaService],
   controllers: [AuthController],
   exports: [AuthService],
 })

@@ -9,8 +9,6 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 import * as validator from 'validator';
 import * as jwt from 'jsonwebtoken';
 
-
-
 @Injectable()
 export class AuthService {
   constructor(
