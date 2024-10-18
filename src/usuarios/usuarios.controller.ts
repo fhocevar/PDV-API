@@ -81,6 +81,7 @@ export class UsuariosController {
   }
   @UseGuards(JwtAuthGuard)
 @Put()
+@UseGuards(AuthGuard('jwt'))
 @ApiOperation({ summary: 'Atualizar perfil do usuário' })
   @ApiResponse({ status: 200, description: 'Perfil atualizado com sucesso.' })
 async updateProfile(@Request() req, @Body() updateUsuarioDto: UpdateUsuarioDto) {
@@ -104,6 +105,7 @@ async updateProfile(@Request() req, @Body() updateUsuarioDto: UpdateUsuarioDto) 
   return updatedUser;}
 
 @Get('admin')
+@UseGuards(AuthGuard('jwt'))
 @Roles(UserRole.ADMIN)
 @ApiOperation({ summary: 'Dados apenas para administradores' })
 @ApiResponse({ status: 200, description: 'Dados retornados com sucesso.' })
@@ -112,6 +114,7 @@ getAdminData() {
 }
 
 @Get('supervisor')
+@UseGuards(AuthGuard('jwt'))
 @Roles(UserRole.SUPERVISOR)
 @ApiOperation({ summary: 'Dados apenas para supervisores' })
 @ApiResponse({ status: 200, description: 'Dados retornados com sucesso.' })
