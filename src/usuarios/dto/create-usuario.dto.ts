@@ -32,6 +32,10 @@ export class CreateUsuarioDto {
     enum: PrismaUserRole,
     example: PrismaUserRole.ADMIN,
   })
+
+  @IsString()
+  confirmar_senha: string;
+
   @IsNotEmpty()
   @IsEnum(PrismaUserRole)
   role: PrismaUserRole;

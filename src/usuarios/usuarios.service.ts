@@ -16,11 +16,15 @@ export class UsuariosService {
   async create(createUsuarioDto: CreateUsuarioDto) {
     console.log('Dados recebidos para criação:', createUsuarioDto);
         
-    const { email, senha, nome, role } = createUsuarioDto;
+    const { email, senha, confirmar_senha, nome, role } = createUsuarioDto;
     console.log('Email:', email);
     console.log('Senha:', senha);
     console.log('Nome:', nome);
     console.log('Role:', role);
+
+    if (senha !== confirmar_senha) {
+      throw new BadRequestException('As senhas não coincidem.');
+    }
     
     if (!Object.values(UserRole).includes(role)) {
       throw new BadRequestException('Role inválido');
