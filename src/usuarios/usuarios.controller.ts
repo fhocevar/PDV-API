@@ -34,6 +34,7 @@ export class UsuariosController {
   @ApiResponse({ status: 200, description: 'Usuário logado com sucesso.' })
   @ApiResponse({ status: 401, description: 'Credenciais inválidas.' })
   async login(@Body() loginDto: LoginDto) {
+    console.log('Login DTO recebido:', loginDto);
     const token = await this.authService.login(loginDto.email, loginDto.senha);
     return { token };}
 
