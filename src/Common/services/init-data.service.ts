@@ -55,7 +55,7 @@ export class InitDataService implements OnModuleInit, OnModuleDestroy {
         nome: 'usuario',
         email: 'usuario@example.com',        
         senha: 'usuario123',
-        role: UserRole.USUARIO_COMUM,
+        role: UserRole.USUARIO,
       },
     ];
 

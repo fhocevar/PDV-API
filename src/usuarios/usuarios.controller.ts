@@ -15,12 +15,12 @@ import { LoginDto } from './dto/login.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Usuários')
-@Controller('usuarios')
-@UseGuards(JwtAuthGuard, RolesGuard)
+@Controller()
+//@UseGuards(JwtAuthGuard, RolesGuard)
 export class UsuariosController {
     constructor(private readonly usuariosService: UsuariosService, private prisma: PrismaService,private readonly authService: AuthService, ) {}
 
-  @Post()
+  @Post('usuarios')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Criar um novo usuário' })
   @ApiResponse({ status: 201, description: 'Usuário criado com sucesso.' })

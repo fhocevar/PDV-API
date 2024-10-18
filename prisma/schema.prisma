@@ -17,7 +17,7 @@ enum UserRole {
   ADMIN
   SUPERVISOR
   GERENTE
-  USUARIO_COMUM
+  USUARIO
 }
 
 model Usuario {
