@@ -77,9 +77,16 @@ export class UsuariosController {
   @ApiOperation({ summary: 'Obter perfil do usuário logado' })
   @ApiResponse({ status: 200, description: 'Perfil do usuário retornado.' })
   async obterPerfil(@Request() req) {
-    const usuarioId = req.user.id; 
-    return this.usuariosService.obterPerfil(usuarioId);
-  }
+    console.log('req.user:', req.user);
+    const usuarioId = req.user.userId;;    
+    console.log('ID recebido no controlador:', usuarioId);    
+    if (!usuarioId) {
+        throw new BadRequestException('ID deve ser um número');
+    }    
+    return this.usuariosService.obterPerfil(Number(usuarioId));
+}
+
+
   @UseGuards(JwtAuthGuard)
 @Put()
 @UseGuards(AuthGuard('jwt'))

@@ -53,11 +53,15 @@ export class AuthService {
     }
   
     const token = this.generateToken(usuario);
+    console.log('Token gerado:', token);
+    const decoded = this.jwtService.decode(token);
+    console.log('Payload do JWT:', decoded);
     return token;
   }
 
   private generateToken(user: UsuarioEntity) {
     const payload = { userId: user.id, email: user.email };
+    console.log('Payload do JWT:', payload);
     return this.jwtService.sign(payload);
   }
   

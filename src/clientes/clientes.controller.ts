@@ -5,6 +5,7 @@ import { CreateClienteDto } from './dto/create-cliente.dto';
 import { UpdateClienteDto } from './dto/update-cliente.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+
 @ApiTags('Clientes')
 @Controller('clientes')
 export class ClientesController {
@@ -19,12 +20,12 @@ export class ClientesController {
     const userId = req.user.id;
     return this.clientesService.create(createClienteDto, userId);
   }
-
+  
   @UseGuards(JwtAuthGuard)
-  @Get()
+  @Get('ClientePorUsuario')
   @ApiOperation({ summary: 'Listar todos os clientes' })
   @ApiResponse({ status: 200, description: 'Lista de clientes retornada com sucesso.' })
-  async findAll(@Request() req) {
+  async find(@Request() req) {
     const userId = req.user.id;
     return this.clientesService.findAll(userId);
   }
