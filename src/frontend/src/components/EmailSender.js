@@ -23,8 +23,7 @@ const EmailSender = () => {
       if (!response.ok) throw new Error('Erro ao enviar email');
 
       setMessage('Email enviado com sucesso!');
-      setError('');
-      // Limpar campos após o envio
+      setError('');      
       setTo('');
       setSubject('');
       setText('');

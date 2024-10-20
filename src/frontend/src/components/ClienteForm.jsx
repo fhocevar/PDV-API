@@ -10,8 +10,7 @@ import React, { useState } from 'react';
 
        const handleSubmit = async (e) => {
            e.preventDefault();
-           await createCliente(data);
-           // Adicione lógica para atualizar a lista após a criação
+           await createCliente(data);           
        };
 
        return (

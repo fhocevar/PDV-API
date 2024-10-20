@@ -52,7 +52,7 @@ const CreateOrderForm = () => {
             <input type="number" {...register("pedido_produtos.0.produto_id")} placeholder="ID do Produto" className="input" />
             <input type="number" {...register("pedido_produtos.0.quantidade_produto")} placeholder="Quantidade" className="input" />
           </div>
-          {/* Você pode adicionar mais campos para produtos se necessário */}
+          {}
         </div>
         {errors.pedido_produtos && <span>{errors.pedido_produtos[0]?.produto_id?.message || errors.pedido_produtos[0]?.quantidade_produto?.message}</span>}
       </div>
