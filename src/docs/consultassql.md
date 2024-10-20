@@ -1,13 +1,3 @@
-
-
-
-
-
-
-
-
-
-
 SELECT DISTINCT role FROM "Usuario";
 
 DELETE FROM "Usuario" WHERE role NOT IN ('ADMIN', 'SUPERVISOR', 'GERENTE', 'USUARIO_COMUM');
@@ -36,4 +26,17 @@ select * from public."Usuario"
 
 select * from public."Cliente"
 
+select * from public."Produto"
+
+select * from public."Pedido"
+
 SELECT unnest(enum_range(NULL::public."UserRole")) AS role;
+
+
+
+
+
+
+
+
+

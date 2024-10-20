@@ -27,6 +27,9 @@ export class PedidosService {
     }
     
     const produtos = await this.produtosService.findAll();
+    const produtosEncontrados = pedido_produtos.filter(item => 
+      produtos.some(p => p.id === item.produto_id)
+    );
 
     if (produtos.length !== pedido_produtos.length) {
       throw new NotFoundException({ mensagem: "Um ou mais produtos não encontrados" });

@@ -50,6 +50,7 @@ model Cliente {
   nome      String
   email     String   @unique
   cpf       String   @unique
+  cnpj      String?
   cep       String
   rua       String
   numero    String

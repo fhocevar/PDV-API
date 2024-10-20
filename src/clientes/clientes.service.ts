@@ -13,6 +13,16 @@ export class ClientesService {
   async create(data: CreateClienteDto, userId: number) {  
     console.log('Iniciando criação de cliente:', data);
 
+    if (!this.validationService.validarEmail(data.email)) {
+      console.log('E-mail inválido');
+      throw new BadRequestException('E-mail inválido.');
+    }
+
+    const isDomainValid = await this.validationService.verificarDominioEmail(data.email);
+  if (!isDomainValid) {
+    throw new BadRequestException('Domínio de e-mail inválido ou não acessível.');
+  }
+
     if (!this.validationService.validarCPF(data.cpf) && !data.cnpj) {
       console.error('Erro: CPF ou CNPJ inválido.', { cpf: data.cpf, cnpj: data.cnpj });
       throw new BadRequestException('CPF ou CNPJ inválido.');

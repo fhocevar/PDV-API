@@ -1,5 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { Module } from '@nestjs/common';
+import * as dns from 'dns';
+import { promisify } from 'util';
+
+const resolveMx = promisify(dns.resolveMx);
+
 @Injectable()
 export class ValidationService {
   validarCPF(cpf: string): boolean {
@@ -64,4 +69,20 @@ export class ValidationService {
     );
   }
 
+  validarEmail(email: string): boolean {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
+
+  async verificarDominioEmail(email: string): Promise<boolean> {
+    const domain = email.split('@')[1];
+    
+    try {
+      const addresses = await resolveMx(domain);
+      return addresses.length > 0;
+    } catch (error) {
+      console.error('Erro ao verificar domínio de e-mail:', error);
+      return false;
+    }
+  }
 }

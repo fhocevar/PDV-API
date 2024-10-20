@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
    import { createCliente } from '../../api';
-
+   import axios from 'axios';
+   
    const ClienteForm = () => {
        const [data, setData] = useState({ nome: '', email: '' });
 
