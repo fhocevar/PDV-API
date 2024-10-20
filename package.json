@@ -21,6 +21,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
     "@nestjs/axios": "^3.0.3",
     "@nestjs/common": "^10.4.4",
     "@nestjs/config": "^3.2.3",
@@ -31,8 +32,10 @@
     "@nestjs/swagger": "^7.4.2",
     "@paypal/checkout-server-sdk": "^1.0.3",
     "@prisma/client": "^5.19.1",
+    "@shadcn/ui": "^0.0.4",
     "@types/mercadopago": "^1.5.11",
     "@zxing/library": "^0.21.3",
+    "autoprefixer": "^10.4.20",
     "barcode-reader": "^1.6.1",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
@@ -48,11 +51,14 @@
     "pagseguro": "^0.1.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
+    "postcss": "^8.4.47",
+    "react-hook-form": "^7.53.1",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "square": "^38.1.0",
     "stripe": "^17.2.0",
     "swagger-ui-express": "^5.0.1",
+    "tailwindcss": "^3.4.14",
     "uuid": "^10.0.0"
   },
   "devDependencies": {
