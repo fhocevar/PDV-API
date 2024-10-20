@@ -9,6 +9,7 @@ import * as jwt from 'jsonwebtoken';
 import * as validator from 'validator';
 import { UserRole } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class UsuariosService {
@@ -142,6 +143,33 @@ export class UsuariosService {
     }
     return this.prisma.usuario.findUnique({
       where: { id: id, },
+    });
+  }
+
+  async login(loginDto: LoginDto): Promise<{ token: string }> {
+    const { email, senha } = loginDto;  
+    
+    const usuario = await this.prisma.usuario.findUnique({
+      where: { email },
+    });
+  
+    if (!usuario) {
+      throw new UnauthorizedException('E-mail ou senha inválidos');
+    }  
+    
+    const senhaValida = await bcrypt.compare(senha, usuario.senha);
+    if (!senhaValida) {
+      throw new UnauthorizedException('E-mail ou senha inválidos');
+    }  
+    
+    const token = this.gerarToken(usuario);
+  
+    return { token };
+  }
+  
+  private gerarToken(usuario: UsuarioEntity): string {
+    return jwt.sign({ id: usuario.id, email: usuario.email, role: usuario.role }, process.env.JWT_SECRET, {
+      expiresIn: '1d',
     });
   }
 

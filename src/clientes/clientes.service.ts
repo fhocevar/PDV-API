@@ -12,6 +12,7 @@ export class ClientesService {
 
   async create(data: CreateClienteDto, userId: number) {  
     console.log('Iniciando criação de cliente:', data);
+    console.log('Dados recebidos para criação:', CreateClienteDto);
 
     if (!this.validationService.validarEmail(data.email)) {
       console.log('E-mail inválido');
@@ -25,6 +26,7 @@ export class ClientesService {
 
     if (!this.validationService.validarCPF(data.cpf) && !data.cnpj) {
       console.error('Erro: CPF ou CNPJ inválido.', { cpf: data.cpf, cnpj: data.cnpj });
+      console.error('CPF inválido:', CreateClienteDto.cpf);
       throw new BadRequestException('CPF ou CNPJ inválido.');
     }
   

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { PrismaModule } from '../prisma/prisma.module';
 import { InitDataService } from './Common/services/init-data.service';
 import { AppController } from './app.controller';
@@ -18,10 +18,15 @@ import { RolesGuard } from './auth/roles.guard';
 import { JwtAuthGuard } from './auth/jwt-auth.guard'
 import { PrismaService } from '../prisma/prisma.service';
 import { MailService } from './mail/mail.service';
+import { ErrorLoggingMiddleware } from '../src/Common/middlewares/error-logging.middleware';
 
 @Module({
   imports: [UsuariosModule, CategoriasModule, ProdutosModule, ClientesModule, PedidosModule, AuthModule,MailModule, PrismaModule, LeituraModule],
   controllers: [AppController],
   providers: [AppService, LeituraService, CarrinhoService, PagamentoService, RolesGuard, JwtAuthGuard, InitDataService, PrismaService, MailService] 
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(ErrorLoggingMiddleware).forRoutes('*');
+  }
+}

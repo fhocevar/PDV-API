@@ -1,6 +1,9 @@
 import { IsEmail, IsNotEmpty, IsString,} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 export class CreateClienteDto {
+  static cpf(arg0: string, cpf: any) {
+    throw new Error('Method not implemented.');
+  }
   @ApiProperty({
     description: 'Nome do cliente',
     example: 'João Silva',
