@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ![](https://i.imgur.com/xG74tOh.png)
 
 # Desafio de Final Back-end
@@ -566,3 +567,6 @@ Critérios de aceite:
 ---
 
 **COLOQUE O SEU NOME OU O NOME DO GRUPO AQUI:**
+=======
+# PDV-API SISTEMA DE PONTO DE VENDA
+>>>>>>> 618ba358def3818703d30881d538fd029ae17be6
