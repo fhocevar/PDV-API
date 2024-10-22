@@ -4,10 +4,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { UsuarioEntity } from '../usuarios/usuarios.entity';
 import * as bcrypt from 'bcryptjs';
-import { LoginDto } from './dto/login.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 import * as validator from 'validator';
-import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {

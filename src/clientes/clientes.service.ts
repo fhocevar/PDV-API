@@ -48,12 +48,10 @@ export class ClientesService {
       const clienteData = {
         ...data,
         usuarioId: userId,
-        endereco: {
-          rua: cepData.logradouro,
-          bairro: cepData.bairro,
-          cidade: cepData.localidade,
-          estado: cepData.uf,
-        },
+        rua: cepData.logradouro,
+        bairro: cepData.bairro,
+        cidade: cepData.localidade,
+        estado: cepData.uf,
       };
 
       const existingEmail = await this.prisma.cliente.findUnique({

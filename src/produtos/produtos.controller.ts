@@ -3,7 +3,6 @@ import { ProdutosService } from './produtos.service';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RequestWithUser } from '../auth/request-with-user.interface';
-import { IsNumber } from 'class-validator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileUploadService } from '../Common/middlewares/file-upload.middleware';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';

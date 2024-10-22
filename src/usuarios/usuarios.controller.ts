@@ -1,7 +1,6 @@
-import {Body,Controller,Get,Param, Post, HttpCode,  HttpStatus, Patch, Request, UseGuards, Put, NotFoundException, BadRequestException, ConflictException, UnauthorizedException} from '@nestjs/common';
+import {Body,Controller,Get,Param, Post, HttpCode,  HttpStatus, Patch, Request, UseGuards, Put, BadRequestException,} from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from '../auth/roles.decorator';
-import { RolesGuard } from '../auth/roles.guard';
 import { UserRole } from '@prisma/client';
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
@@ -16,7 +15,6 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Usuários')
 @Controller('usuarios')
-//@UseGuards(JwtAuthGuard, RolesGuard)
 export class UsuariosController {
     constructor(private readonly usuariosService: UsuariosService, private prisma: PrismaService,private readonly authService: AuthService, ) {}
 
@@ -86,7 +84,6 @@ export class UsuariosController {
     return this.usuariosService.obterPerfil(Number(usuarioId));
 }
 
-
   @UseGuards(JwtAuthGuard)
 @Put()
 @UseGuards(AuthGuard('jwt'))
@@ -118,8 +115,7 @@ async updateProfile(@Request() req, @Body() updateUsuarioDto: UpdateUsuarioDto) 
 @ApiOperation({ summary: 'Dados apenas para administradores' })
 @ApiResponse({ status: 200, description: 'Dados retornados com sucesso.' })
 getAdminData() {
-  return 'Dados apenas para administradores';
-}
+  return 'Dados apenas para administradores';}
 
 @Get('supervisor')
 @UseGuards(AuthGuard('jwt'))

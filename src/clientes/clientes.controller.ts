@@ -1,10 +1,9 @@
-import { Body, Controller, Get, Param, Post, UseGuards, Request, NotFoundException, Put, BadRequestException } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards, Request, NotFoundException, Put } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ClientesService } from './clientes.service';
 import { CreateClienteDto } from './dto/create-cliente.dto';
 import { UpdateClienteDto } from './dto/update-cliente.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-
 
 @ApiTags('Clientes')
 @Controller('clientes')

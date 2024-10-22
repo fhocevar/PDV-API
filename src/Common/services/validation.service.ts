@@ -1,5 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
-import { Module } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as dns from 'dns';
 import { promisify } from 'util';
 

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException, Inject, forwardRef, ConflictException, UnauthorizedException, UploadedFile } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, Inject, forwardRef, UploadedFile } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import * as fs from 'fs';

@@ -1,6 +1,5 @@
 import { Injectable, } from '@nestjs/common';
 import { MulterModuleOptions } from '@nestjs/platform-express';
-import * as multer from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import { diskStorage } from 'multer';
 

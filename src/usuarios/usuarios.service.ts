@@ -6,9 +6,7 @@ import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import * as bcrypt from 'bcrypt';
 import { UsuarioEntity } from './usuarios.entity';
 import * as jwt from 'jsonwebtoken';
-import * as validator from 'validator';
 import { UserRole } from '@prisma/client';
-import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
 
 @Injectable()
