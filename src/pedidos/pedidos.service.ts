@@ -156,4 +156,29 @@ export class PedidosService {
 
     return this.create(pedidoDto, userId);
   }
+
+  async delete(id: number) {
+    console.log(`Tentando excluir o pedido com ID: ${id}`);
+  
+    const pedido = await this.prisma.pedido.findUnique({ where: { id } });
+    if (!pedido) {
+      console.error(`Pedido com ID ${id} não encontrado.`);
+      throw new NotFoundException({ mensagem: "Pedido não encontrado" });
+    }
+  
+    console.log(`Pedido encontrado:`, pedido);
+
+    await this.prisma.pedidoProduto.deleteMany({
+      where: { pedido_id: id },
+    });
+    console.log(`Produtos associados ao pedido com ID ${id} excluídos com sucesso.`);
+    
+    await this.prisma.pedido.delete({ where: { id } });
+    console.log(`Pedido com ID ${id} excluído com sucesso.`);
+  
+    return { mensagem: "Pedido excluído com sucesso" };
+  }
+  
+  
+
 }

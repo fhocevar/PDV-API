@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards, Request,  Query, ParseIntPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards, Request,  Query, ParseIntPipe, Delete } from '@nestjs/common';
 import { PedidosService } from './pedidos.service';
 import { CreatePedidoDto } from './dto/create-pedido.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -52,4 +52,13 @@ export class PedidosController {
    const metodo = createPedidoDto.metodo;
   return this.pedidosService.criarPedidoDoCarrinho(userId, clienteId, token, metodo);
  }  
+
+ @UseGuards(JwtAuthGuard)
+ @Delete(':id')
+ @ApiOperation({ summary: 'Excluir um pedido pelo ID' })
+ @ApiResponse({ status: 200, description: 'Pedido excluído com sucesso.' })
+ @ApiResponse({ status: 404, description: 'Pedido não encontrado.' })
+ async delete(@Param('id') id: string) {
+   return this.pedidosService.delete(+id);   
+ } 
 }
