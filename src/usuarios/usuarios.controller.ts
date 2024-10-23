@@ -18,7 +18,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 export class UsuariosController {
     constructor(private readonly usuariosService: UsuariosService, private prisma: PrismaService,private readonly authService: AuthService, ) {}
 
-  @Post('usuarios')
+  @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Criar um novo usuário' })
   @ApiResponse({ status: 201, description: 'Usuário criado com sucesso.' })
