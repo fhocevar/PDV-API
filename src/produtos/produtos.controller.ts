@@ -95,7 +95,10 @@ export class ProdutosController {
   @UseGuards(JwtAuthGuard)
   @Patch(':id/imagem')
   @UseInterceptors(FileInterceptor('imagem', FileUploadService.multerOptions()))
-  async uploadImage(@Param('id') id: number, @UploadedFile() imageFile: Express.Multer.File, @Request() req) {
+  async uploadImage(@Param('id') id: number, @UploadedFile() imageFile: Express.Multer.File) {
+    if (!imageFile) {
+      throw new BadRequestException('Arquivo não fornecido');
+    }
     return this.produtosService.updateImage(id, imageFile);
   }
 }

@@ -4,6 +4,7 @@ import { CreateProdutoDto } from './dto/create-produto.dto';
 import * as fs from 'fs';
 import * as path from 'path';
 import { PedidosService } from '../pedidos/pedidos.service';
+import { anyOf } from 'square/dist/types/schema';
 
 @Injectable()
 export class ProdutosService {
@@ -79,6 +80,8 @@ export class ProdutosService {
   }
 
   async updateImage(id: number, @UploadedFile() imageFile: Express.Multer.File) {
+    console.log('Atualizando imagem para o produto com ID:', id);
+    console.log('Arquivo recebido:', imageFile);
     if (!id) {
       throw new BadRequestException('ID não pode ser vazio');
   }
@@ -86,7 +89,9 @@ export class ProdutosService {
 
     const produto = await this.prisma.produto.findUnique({ where: { id: id } });
     if (!produto) {
-      console.log('Produto não encontrado para ID:', id);
+      console.log('Produto não encontrado para ID:', id);      
+      console.log('Produto encontrado:', produto);
+      console.log('Nova imagem recebida:', imageFile);
       throw new NotFoundException('Produto não encontrado');
     }
     console.log('Produto encontrado:', produto);
@@ -107,10 +112,18 @@ export class ProdutosService {
     console.log('Nova imagem recebida:', imageFile.filename);
     
     if (produto.imagem_url) {
-      const oldFilePath = path.join(__dirname, '..', '..', 'uploads', produto.imagem_url);
+      const oldFilePath = path.join(process.cwd(), 'uploads', produto.imagem_url);
+      console.log('Tentando remover a imagem antiga em:', oldFilePath);
       console.log('Removendo imagem antiga em:', oldFilePath);
-      fs.unlinkSync(oldFilePath);
+      
+      if (fs.existsSync(oldFilePath)) {
+        fs.unlinkSync(oldFilePath);
+        console.log('Imagem antiga removida com sucesso.');
+      } else {
+        console.warn('Imagem antiga não encontrada:', oldFilePath);
+      }
     }
+    
     
     const newImageName = imageFile.filename;
     await this.prisma.produto.update({
