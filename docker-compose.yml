@@ -9,3 +9,15 @@ services:
       - ./data/postgres:/var/lib/postgresql/data
     ports: 
       - 5432:5432
+
+api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pdv-api
+    ports:
+      - 3000:3000
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
+    depends_on:
+      - db
