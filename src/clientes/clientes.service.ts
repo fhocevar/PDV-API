@@ -19,6 +19,14 @@ export class ClientesService {
       throw new BadRequestException('E-mail inválido.');
     }
 
+    const existingEmail = await this.prisma.cliente.findUnique({
+      where: { email: data.email },
+    });
+    if (existingEmail) {
+      console.error('Erro: Email já cadastrado.', { email: data.email });
+      throw new ConflictException('Email já cadastrado.');
+    }    
+
     const isDomainValid = await this.validationService.verificarDominioEmail(data.email);
   if (!isDomainValid) {
     throw new BadRequestException('Domínio de e-mail inválido ou não acessível.');
@@ -34,33 +42,7 @@ export class ClientesService {
       console.error('Erro: CNPJ inválido.', { cnpj: data.cnpj });
       throw new BadRequestException('CNPJ inválido.');
     }
-
-    if (!this.validationService.validarCEP(data.cep)) {
-      console.error('Erro: CEP inválido.', { cep: data.cep });
-      throw new ConflictException('CEP inválido.');
-    }
-
-    console.log('Buscando informações do CEP:', data.cep);
-    try {
-      const cepData = await this.cepService.buscarCep(data.cep).toPromise();
-      console.log('Dados do CEP obtidos:', cepData);
-
-      const clienteData = {
-        ...data,
-        usuarioId: userId,
-        rua: cepData.logradouro,
-        bairro: cepData.bairro,
-        cidade: cepData.localidade,
-        estado: cepData.uf,
-      };
-
-      const existingEmail = await this.prisma.cliente.findUnique({
-        where: { email: data.email },
-      });
-      if (existingEmail) {
-        console.error('Erro: Email já cadastrado.', { email: data.email });
-        throw new ConflictException('Email já cadastrado.');
-      }    
+          
       const existingCpf = await this.prisma.cliente.findUnique({
         where: { cpf: data.cpf },
       });
@@ -68,6 +50,25 @@ export class ClientesService {
         console.error('Erro: CPF já cadastrado.', { cpf: data.cpf });
         throw new ConflictException('CPF já cadastrado.');
       }
+
+      if (!this.validationService.validarCEP(data.cep)) {
+        console.error('Erro: CEP inválido.', { cep: data.cep });
+        throw new ConflictException('CEP inválido.');
+      }
+        
+        console.log('Buscando informações do CEP:', data.cep);
+      try {
+        const cepData = await this.cepService.buscarCep(data.cep).toPromise();
+        console.log('Dados do CEP obtidos:', cepData);
+  
+        const clienteData = {
+          ...data,
+          usuarioId: userId,
+          rua: cepData.logradouro,
+          bairro: cepData.bairro,
+          cidade: cepData.localidade,
+          estado: cepData.uf,
+        };
 
       console.log('Criando cliente com os dados:', clienteData);
       return this.prisma.cliente.create({
