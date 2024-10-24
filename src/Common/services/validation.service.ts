@@ -10,10 +10,12 @@ export class ValidationService {
     cpf = cpf.replace(/\D/g, '');
 
     if (cpf.length !== 11) {
+      console.warn(`[${new Date().toISOString()}] CPF inválido: ${cpf} (tamanho incorreto)`);
       return false;
     }
 
     if (/^(\d)\1{10}$/.test(cpf)) {
+      console.warn(`[${new Date().toISOString()}] CPF inválido: ${cpf} (números repetidos)`);
       return false;
     }
 
@@ -35,14 +37,19 @@ export class ValidationService {
     );    
   }
   validarCEP(cep: string): boolean {
-    cep = cep.replace(/\D/g, '');    
-    return cep.length === 8;
+    cep = cep.replace(/\D/g, '');
+    const valido = cep.length === 8;
+    if (!valido) {
+      console.warn(`[${new Date().toISOString()}] CEP inválido: ${cep}`);
+    }
+    return valido;
   }
 
   validarCNPJ(cnpj: string): boolean {
     cnpj = cnpj.replace(/\D/g, '');
   
     if (cnpj.length !== 14) {
+      console.warn(`[${new Date().toISOString()}] CNPJ inválido: ${cnpj} (tamanho incorreto)`);
       return false;
     }
   
@@ -70,7 +77,11 @@ export class ValidationService {
 
   validarEmail(email: string): boolean {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
+    const valido = regex.test(email);
+    if (!valido) {
+      console.warn(`[${new Date().toISOString()}] E-mail inválido: ${email}`);
+    }
+    return valido;
   }
 
   async verificarDominioEmail(email: string): Promise<boolean> {
@@ -81,6 +92,7 @@ export class ValidationService {
       return addresses.length > 0;
     } catch (error) {
       console.error('Erro ao verificar domínio de e-mail:', error);
+      console.error(`[${new Date().toISOString()}] Erro ao verificar domínio de e-mail: ${domain}`, error);
       return false;
     }
   }
