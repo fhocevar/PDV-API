@@ -19,11 +19,13 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard'
 import { PrismaService } from '../prisma/prisma.service';
 import { MailService } from './mail/mail.service';
 import { ErrorLoggingMiddleware } from '../src/Common/middlewares/error-logging.middleware';
+import { BarcodeModule } from '../src/barcodeQRgenerator/barcode.module';
+import {BarcodeService} from '../src/barcodeQRgenerator/barcode.service'
 
 @Module({
-  imports: [UsuariosModule, CategoriasModule, ProdutosModule, ClientesModule, PedidosModule, AuthModule,MailModule, PrismaModule, LeituraModule],
+  imports: [UsuariosModule, CategoriasModule, ProdutosModule, ClientesModule, PedidosModule, AuthModule,MailModule, PrismaModule, LeituraModule, BarcodeModule],
   controllers: [AppController],
-  providers: [AppService, LeituraService, CarrinhoService, PagamentoService, RolesGuard, JwtAuthGuard, InitDataService, PrismaService, MailService] 
+  providers: [AppService, LeituraService, CarrinhoService, PagamentoService, RolesGuard, JwtAuthGuard, InitDataService, PrismaService, MailService, BarcodeService] 
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -3,6 +3,6 @@ import { CupomFiscalService } from './CupomFiscal.service';
 
 @Module({
   providers: [CupomFiscalService],
-  exports: [CupomFiscalService], // Certifique-se de exportá-lo
+  exports: [CupomFiscalService],
 })
 export class CupomFiscalModule {}
